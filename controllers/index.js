@@ -121,7 +121,6 @@ exports.getListJoki =  async (req, res, next) =>  {
      ...q
     })
 
-    console.log(order, " naon?")
     return res.status(200).json({ m: 'success get data', data: order })
   } catch (error) {
       return next(error)
