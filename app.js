@@ -4,7 +4,7 @@ const express = require('express');
 const normalizePort = require('normalize-port');
 const bodyParses = require("body-parser")
 const app = express();
-const port = normalizePort(process.env.PORT || '3000');
+const port = normalizePort(process.env.PORT || '4000');
 const mongoose = require('mongoose')
 const errorHandler = require('./middleware')
 
