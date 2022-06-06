@@ -1,4 +1,3 @@
-const { query } = require('express')
 const { Order } = require('../models')
 
 const pricelist = [
@@ -64,7 +63,7 @@ const pricelist = [
   },
 ]
 
-exports.createJoki =  async (req, res, next) =>  {
+exports.createOrder =  async (req, res, next) =>  {
   try {
     const {
       name,
@@ -106,13 +105,15 @@ exports.createJoki =  async (req, res, next) =>  {
   }
 }
 
-exports.getListJoki =  async (req, res, next) =>  {
+exports.getListOrder =  async (req, res, next) =>  {
   try {
     const {
       name
     } = req.query
 
-    q = {}
+    q = {
+      approved: true
+    }
 
     if (name !== "") {
       q.name = new RegExp(name, "i")
@@ -126,3 +127,73 @@ exports.getListJoki =  async (req, res, next) =>  {
       return next(error)
   }
 }
+
+
+// admin panel here
+// approve orderan masuk
+exports.changeApprovalOrder =  async (req, res, next) =>  {
+  try {
+    const {
+      id
+    } = req.query
+
+    const {
+      approve
+    } = req.body
+
+    await Order.findOneAndUpdate({
+      _id: id
+    }, {
+      $set: {
+        approved: approve
+      }
+    })
+
+    return res.status(200).json({ m: 'success update data' })
+  } catch (error) {
+      return next(error)
+  }
+}
+
+// delete orderan
+exports.deleteOrder =  async (req, res, next) =>  {
+  try {
+    const {
+      id
+    } = req.query
+
+    await Order.deleteOne({
+      _id: id
+    })
+
+    return res.status(200).json({ m: 'success delete data' })
+  } catch (error) {
+      return next(error)
+  }
+}
+
+// change status orderan
+exports.changeStatusOrder =  async (req, res, next) =>  {
+  try {
+    const {
+      id
+    } = req.query
+
+    const {
+      status
+    } = req.body
+
+    await Order.findOneAndUpdate({
+      _id: id
+    }, {
+      $set: {
+        status: status
+      }
+    })
+
+    return res.status(200).json({ m: 'success delete data' })
+  } catch (error) {
+      return next(error)
+  }
+}
+

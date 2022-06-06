@@ -32,6 +32,14 @@ const customerSchema = new Schema({
   target_rank: {
     type: String,
     default: ''
+  },
+  approved: {
+    type: Boolean,
+    default: false,
+  },
+  status: {
+    type: Boolean,
+    default: false // false mean processing, true mean done
   }
 }, {
   timestamps: true
