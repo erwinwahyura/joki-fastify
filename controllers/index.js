@@ -105,6 +105,7 @@ exports.createOrder =  async (req, res, next) =>  {
   }
 }
 
+// list order in user panel
 exports.getListOrder =  async (req, res, next) =>  {
   try {
     const {
@@ -135,21 +136,21 @@ exports.changeApprovalOrder =  async (req, res, next) =>  {
   try {
     const {
       id
-    } = req.query
+    } = req.params
 
     const {
-      approve
+      approved
     } = req.body
 
-    await Order.findOneAndUpdate({
+   let test = await Order.findOneAndUpdate({
       _id: id
     }, {
       $set: {
-        approved: approve
+        approved: approved
       }
-    })
+    }, {new: true})
 
-    return res.status(200).json({ m: 'success update data' })
+    return res.status(200).json({ m: 'success update data', data: test })
   } catch (error) {
       return next(error)
   }
@@ -160,7 +161,7 @@ exports.deleteOrder =  async (req, res, next) =>  {
   try {
     const {
       id
-    } = req.query
+    } = req.params
 
     await Order.deleteOne({
       _id: id
@@ -177,7 +178,7 @@ exports.changeStatusOrder =  async (req, res, next) =>  {
   try {
     const {
       id
-    } = req.query
+    } = req.params
 
     const {
       status
@@ -189,9 +190,32 @@ exports.changeStatusOrder =  async (req, res, next) =>  {
       $set: {
         status: status
       }
-    })
+    }, {new: true})
 
     return res.status(200).json({ m: 'success delete data' })
+  } catch (error) {
+      return next(error)
+  }
+}
+
+// list order in admin panel
+exports.getListOrderAdmin =  async (req, res, next) =>  {
+  try {
+    const {
+      name
+    } = req.query
+
+    q = {
+    }
+
+    if (name !== "") {
+      q.name = new RegExp(name, "i")
+    }
+    let order = await Order.find({
+     ...q
+    })
+
+    return res.status(200).json({ m: 'success get data', data: order })
   } catch (error) {
       return next(error)
   }
