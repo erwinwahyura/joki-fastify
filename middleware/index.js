@@ -1,5 +1,4 @@
 module.exports = async (err, req, res, next) => {
-    console.log(err, 'error naon?')
     if (err === 'Unauthorized') {
       return res.status(401).json({ ok: false, title: 'Warning', m: 'You dont have authorized!'})
     }
